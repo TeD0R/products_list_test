@@ -18,7 +18,7 @@ class CustomHttpClient extends http.BaseClient {
     return _client.send(request);
   }
 
-  Future<Either<String, Map<String, dynamic>>> getJson(Uri url) async {
+  Future<Either<String, List<dynamic>>> getJsonList(Uri url) async {
     try {
       final response = await get(url);
 
@@ -32,16 +32,16 @@ class CustomHttpClient extends http.BaseClient {
     }
   }
 
-  Either<String, Map<String, dynamic>> _processResponse(
+  Either<String, List<dynamic>> _processResponse(
       http.Response response) {
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
+      final List<dynamic> data = json.decode(response.body);
       return right(data);
     } else if (response.statusCode == 404) {
       return left(ErrorMessages.productsNotFound);
     } else {
       return left(
-          '${ErrorMessages.failedToLoadProducts} (Error ${response.statusCode})');
+          '${ErrorMessages.failedToLoadMovies} (Error ${response.statusCode})');
     }
   }
 }

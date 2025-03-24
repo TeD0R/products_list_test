@@ -3,34 +3,34 @@ import 'package:injectable/injectable.dart';
 import 'package:products_list_test/api/services/product_service.dart';
 import 'package:products_list_test/injection.dart';
 
-import '../dto/product.dart';
+import '../dto/movie.dart';
 
 @LazySingleton()
-class ProductRepository {
-  final ProductService _productService = getIt<ProductService>();
+class MovieRepository {
+  final MovieService _movieService = getIt<MovieService>();
 
-  List<Product> _cachedProducts = [];
+  List<Movie> _cachedMovies = [];
 
-  Future<Either<String, List<Product>>> getProducts(
+  Future<Either<String, List<Movie>>> getMovies(
       {bool forceRefresh = false}) async {
 
-    if (_cachedProducts.isNotEmpty && !forceRefresh) {
-      return right(_cachedProducts);
+    if (_cachedMovies.isNotEmpty && !forceRefresh) {
+      return right(_cachedMovies);
     }
 
-    final result = await _productService.fetchProducts();
+    final result = await _movieService.fetchProducts();
 
     return result.fold(
       (error) => left(error),
-      (products) {
-        _cachedProducts = products;
-        return right(products);
+      (movies) {
+        _cachedMovies = movies;
+        return right(movies);
       },
     );
 
   }
 
-  void clearCache() {
-    _cachedProducts.clear();
+  void clearCachedMovies() {
+    _cachedMovies.clear();
   }
 }
